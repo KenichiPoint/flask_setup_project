@@ -1,0 +1,44 @@
+name: Publish to Public Repo
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Copy files and re-init git
+        run: |
+          TMPDIR=$(mktemp -d)
+          rsync -a --exclude='.git' ./ "$TMPDIR"/
+          rm -rf ./*
+          rsync -a "$TMPDIR"/ ./  # ← .github含め全コピー
+          rm -rf "$TMPDIR"
+
+          # 必ず init 前にクリーンな状態に
+          rm -rf .git
+          git init
+
+          git config user.name "solodev-jp"
+          git config user.email "209776260+solodev-jp@users.noreply.github.com"
+
+          # .githubと.gitignoreを明示的に削除
+          rm -rf .github .gitignore
+
+          git add .
+          git commit -m "Initial public commit"
+
+      - name: Push to public repo
+        env:
+          PAT: ${{ secrets.PUBLIC_REPO_TOKEN }}
+        run: |
+          git branch -M main
+          git remote add public https://x-access-token:$PAT@github.com/solodev-jp/flask_setup_project.git
+          git push public main --force
