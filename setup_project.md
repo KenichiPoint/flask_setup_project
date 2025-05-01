@@ -1,5 +1,5 @@
 
-# setup_project.py 仕様書.
+# setup_project.py 仕様書
 
 ## 概要
 Flaskプロジェクトを初期構築する自動化スクリプトです。  
