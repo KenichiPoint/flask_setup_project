@@ -13,16 +13,16 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-          clean: true
 
       - name: Copy files and re-init git
         run: |
           TMPDIR=$(mktemp -d)
           rsync -a --exclude='.git' ./ "$TMPDIR"/
-          rm -rf . .[^.]* ..?*  # ← ドットファイルも確実に削除
-          rsync -a "$TMPDIR"/ ./
+          rm -rf ./*
+          rsync -a "$TMPDIR"/ ./  # ← .github含め全コピー
           rm -rf "$TMPDIR"
-        
+
+          # 必ず init 前にクリーンな状態に
           rm -rf .git
           git init
 
