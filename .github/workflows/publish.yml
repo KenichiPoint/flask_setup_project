@@ -13,6 +13,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+          clean: true
 
       - name: Copy files and re-init git
         run: |
