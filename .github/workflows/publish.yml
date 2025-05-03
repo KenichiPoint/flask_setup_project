@@ -33,7 +33,7 @@ jobs:
           rm -rf .github .gitignore
 
           git add .
-          git commit -m "Initial public commit"
+          git commit --author="solodev-jp <209776260+solodev-jp@users.noreply.github.com>" -m "Initial public commit"
 
       - name: Push to public repo
         env:
