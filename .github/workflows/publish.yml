@@ -19,18 +19,11 @@ jobs:
         run: |
           TMPDIR=$(mktemp -d)
           rsync -a --exclude='.git' ./ "$TMPDIR"/
-          rm -rf ./* .[^.]* ..?*  # ← 安全に中身だけ削除
+          rm -rf . .[^.]* ..?*  # ← ドットファイルも確実に削除
           rsync -a "$TMPDIR"/ ./
           rm -rf "$TMPDIR"
         
           rm -rf .git
-          
-          # クリーンな作業フォルダを作成
-          mkdir clean_project && cd clean_project
-          
-          # dotfiles（.github や .gitignore など）も含めてコピー（.git は除外）
-          rsync -a --exclude='.git' ./flask_setup_project/ .
-          
           git init
 
           git config user.name "solodev-jp"
@@ -40,7 +33,7 @@ jobs:
           rm -rf .github .gitignore
 
           git add .
-          git commit --author="solodev-jp <209776260+solodev-jp@users.noreply.github.com>" -m "Initial public commit"
+          git commit -m "Initial public commit"
 
       - name: Push to public repo
         env:
