@@ -29,7 +29,7 @@ jobs:
           mkdir clean_project && cd clean_project
           
           # dotfiles（.github や .gitignore など）も含めてコピー（.git は除外）
-          rsync -a --exclude='.git' ../flask_setup_project/ .
+          rsync -a --exclude='.git' ../ .
           
           git init
 
