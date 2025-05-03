@@ -19,7 +19,7 @@ jobs:
         run: |
           TMPDIR=$(mktemp -d)
           rsync -a --exclude='.git' ./ "$TMPDIR"/
-          rm -rf . .[^.]* ..?*  # ← ドットファイルも確実に削除
+          rm -rf ./* .[^.]* ..?*  # ← 安全に中身だけ削除
           rsync -a "$TMPDIR"/ ./
           rm -rf "$TMPDIR"
         
