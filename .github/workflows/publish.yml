@@ -19,22 +19,20 @@ jobs:
           TMPDIR=$(mktemp -d)
           rsync -a --exclude='.git' ./ "$TMPDIR"/
           rm -rf ./*
-          rsync -a "$TMPDIR"/ ./
+          rsync -a "$TMPDIR"/ ./  # ← .github含め全コピー
           rm -rf "$TMPDIR"
-          
+
+          # 必ず init 前にクリーンな状態に
           rm -rf .git
           git init
+
           git config user.name "solodev-jp"
           git config user.email "209776260+solodev-jp@users.noreply.github.com"
-          
-          # 不要ディレクトリを削除
+
+          # .githubと.gitignoreを明示的に削除
           rm -rf .github .gitignore
-          
-          # 念のため .mailmap を作成
-          echo "solodev-jp <209776260+solodev-jp@users.noreply.github.com> KenichiPoint <kenichi@yourdomain.com>" > .mailmap
-          
+
           git add .
-          git add .mailmap
           git commit -m "Initial public commit"
 
       - name: Push to public repo
